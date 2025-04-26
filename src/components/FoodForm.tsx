@@ -19,7 +19,7 @@ export function FoodForm({ foodItem, onClose }: FoodFormProps) {
   const { addFoodItem, updateFoodItem } = useFoodData();
   const [activeTab, setActiveTab] = useState("basic");
   
-  const [form, setForm] = useState<Omit<FoodItem, "id">>({
+  const initialFormState: Omit<FoodItem, "id"> = {
     name: foodItem?.name || "",
     category: foodItem?.category || "Other",
     servingSize: foodItem?.servingSize || "",
@@ -42,10 +42,24 @@ export function FoodForm({ foodItem, onClose }: FoodFormProps) {
     preparationMethod: foodItem?.preparationMethod || "Raw",
     glycemicIndex: foodItem?.glycemicIndex || 0,
     imageUrl: foodItem?.imageUrl || "",
-  });
+    cookingTime: foodItem?.cookingTime,
+    difficulty: foodItem?.difficulty,
+    instructions: foodItem?.instructions,
+    servings: foodItem?.servings,
+    cuisineType: foodItem?.cuisineType,
+    dietaryInfo: foodItem?.dietaryInfo,
+    totalTime: foodItem?.totalTime,
+    prepTime: foodItem?.prepTime,
+    cookTime: foodItem?.cookTime,
+    equipment: foodItem?.equipment,
+    tips: foodItem?.tips,
+    nutritionScore: foodItem?.nutritionScore,
+  };
+
+  const [form, setForm] = useState(initialFormState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     
     const numericFields = [
       "calories", "protein", "fat", "carbohydrates", "fiber", "sugar",
@@ -53,31 +67,26 @@ export function FoodForm({ foodItem, onClose }: FoodFormProps) {
       "vitaminD", "glycemicIndex"
     ];
     
-    if (numericFields.includes(name)) {
-      setForm({
-        ...form,
-        [name]: value === "" ? "" : parseFloat(value) || 0
-      });
-    } else {
-      setForm({
-        ...form,
-        [name]: value
-      });
-    }
+    setForm(prev => ({
+      ...prev,
+      [name]: type === "number" || numericFields.includes(name)
+        ? value === "" ? 0 : parseFloat(value)
+        : value
+    }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setForm({
-      ...form,
+    setForm(prev => ({
+      ...prev,
       [name]: value
-    });
+    }));
   };
 
   const handleImageChange = (url: string) => {
-    setForm({
-      ...form,
+    setForm(prev => ({
+      ...prev,
       imageUrl: url
-    });
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -1,8 +1,7 @@
-
 export interface FoodItem {
   id: string;
   name: string;
-  category: string;
+  category: FoodCategory;
   servingSize: string;
   calories: number;
   protein: number;
@@ -10,20 +9,19 @@ export interface FoodItem {
   carbohydrates: number;
   fiber: number;
   sugar: number;
-  sodium?: number;
-  potassium?: number;
-  calcium?: number;
-  iron?: number;
-  vitaminA?: number;
-  vitaminC?: number;
-  vitaminD?: number;
-  brand?: string;
-  ingredients?: string;
-  allergens?: string;
-  preparationMethod?: PreparationMethod;
-  glycemicIndex?: number;
+  sodium: number;
+  potassium: number;
+  calcium: number;
+  iron: number;
+  vitaminA: number;
+  vitaminC: number;
+  vitaminD: number;
+  brand: string;
+  ingredients: string;
+  allergens: string;
+  preparationMethod: PreparationMethod;
+  glycemicIndex: number;
   imageUrl?: string;
-  // New recipe fields
   cookingTime?: string;
   difficulty?: "Easy" | "Medium" | "Hard";
   instructions?: string[];
@@ -68,3 +66,36 @@ export type PreparationMethod =
   | "Air Fried"
   | "Other";
 
+export interface BasicFormData {
+  name: string;
+  category: string;
+  servingSize: string;
+  calories: number;
+  imageUrl?: string;
+}
+
+export interface MacroFormData {
+  protein: number;
+  fat: number;
+  carbohydrates: number;
+  fiber: number;
+  sugar: number;
+}
+
+export interface MicroFormData {
+  sodium: number;
+  potassium: number;
+  calcium: number;
+  iron: number;
+  vitaminA: number;
+  vitaminC: number;
+  vitaminD: number;
+}
+
+export interface OtherDetailsFormData {
+  brand: string;
+  ingredients: string;
+  allergens: string;
+  preparationMethod: PreparationMethod;
+  glycemicIndex: number;
+}
