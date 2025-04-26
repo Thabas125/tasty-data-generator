@@ -2,14 +2,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FoodItem, FoodCategory, PreparationMethod } from "@/lib/types";
-import { ImageUploader } from "./ImageUploader";
-import { useFoodData } from "@/lib/food-context";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FoodItem } from "@/lib/types";
+import { useFoodData } from "@/lib/food-context";
+import { BasicInfoTab } from "./forms/BasicInfoTab";
+import { MacronutrientsTab } from "./forms/MacronutrientsTab";
+import { MicronutrientsTab } from "./forms/MicronutrientsTab";
+import { OtherDetailsTab } from "./forms/OtherDetailsTab";
 
 interface FoodFormProps {
   foodItem?: FoodItem;
@@ -48,7 +47,6 @@ export function FoodForm({ foodItem, onClose }: FoodFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
-    // Convert numeric fields
     const numericFields = [
       "calories", "protein", "fat", "carbohydrates", "fiber", "sugar",
       "sodium", "potassium", "calcium", "iron", "vitaminA", "vitaminC", 
@@ -94,18 +92,6 @@ export function FoodForm({ foodItem, onClose }: FoodFormProps) {
     if (onClose) onClose();
   };
 
-  const foodCategories: FoodCategory[] = [
-    "Appetizer", "Main Course", "Dessert", "Breakfast", "Lunch", 
-    "Dinner", "Snack", "Beverage", "Salad", "Soup", "Side Dish", 
-    "Sauce", "Other"
-  ];
-
-  const preparationMethods: PreparationMethod[] = [
-    "Raw", "Baked", "Boiled", "Grilled", "Fried", "Steamed", 
-    "Roasted", "Sautéed", "Smoked", "Slow Cooked", "Pressure Cooked", 
-    "Air Fried", "Other"
-  ];
-
   return (
     <form onSubmit={handleSubmit}>
       <Card className="w-full">
@@ -121,310 +107,29 @@ export function FoodForm({ foodItem, onClose }: FoodFormProps) {
               <TabsTrigger value="other">Other Details</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="basic" className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="food-image">Food Image</Label>
-                <ImageUploader 
-                  imageUrl={form.imageUrl} 
-                  onImageChange={handleImageChange}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="name">Food Name *</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="e.g., Granny Smith Apple"
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="category">Category *</Label>
-                <Select 
-                  value={form.category} 
-                  onValueChange={(value) => handleSelectChange("category", value)}
-                  required
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {foodCategories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="servingSize">Serving Size *</Label>
-                <Input
-                  id="servingSize"
-                  name="servingSize"
-                  value={form.servingSize}
-                  onChange={handleChange}
-                  placeholder="e.g., 100g, 1 piece, 1 cup"
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="calories">Calories (kcal) *</Label>
-                <Input
-                  id="calories"
-                  name="calories"
-                  type="number"
-                  value={form.calories}
-                  onChange={handleChange}
-                  placeholder="0"
-                  required
-                />
-              </div>
+            <TabsContent value="basic">
+              <BasicInfoTab 
+                form={form} 
+                handleChange={handleChange}
+                handleSelectChange={handleSelectChange}
+                handleImageChange={handleImageChange}
+              />
             </TabsContent>
             
-            <TabsContent value="macros" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="protein">Protein (g)</Label>
-                  <Input
-                    id="protein"
-                    name="protein"
-                    type="number"
-                    step="0.1"
-                    value={form.protein}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="fat">Fat (g)</Label>
-                  <Input
-                    id="fat"
-                    name="fat"
-                    type="number"
-                    step="0.1"
-                    value={form.fat}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="carbohydrates">Carbohydrates (g)</Label>
-                  <Input
-                    id="carbohydrates"
-                    name="carbohydrates"
-                    type="number"
-                    step="0.1"
-                    value={form.carbohydrates}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="fiber">Fiber (g)</Label>
-                  <Input
-                    id="fiber"
-                    name="fiber"
-                    type="number"
-                    step="0.1"
-                    value={form.fiber}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="sugar">Sugar (g)</Label>
-                <Input
-                  id="sugar"
-                  name="sugar"
-                  type="number"
-                  step="0.1"
-                  value={form.sugar}
-                  onChange={handleChange}
-                  placeholder="0"
-                />
-              </div>
+            <TabsContent value="macros">
+              <MacronutrientsTab form={form} handleChange={handleChange} />
             </TabsContent>
             
-            <TabsContent value="micros" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="sodium">Sodium (mg)</Label>
-                  <Input
-                    id="sodium"
-                    name="sodium"
-                    type="number"
-                    step="1"
-                    value={form.sodium}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="potassium">Potassium (mg)</Label>
-                  <Input
-                    id="potassium"
-                    name="potassium"
-                    type="number"
-                    step="1"
-                    value={form.potassium}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="calcium">Calcium (mg)</Label>
-                  <Input
-                    id="calcium"
-                    name="calcium"
-                    type="number"
-                    step="0.1"
-                    value={form.calcium}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="iron">Iron (mg)</Label>
-                  <Input
-                    id="iron"
-                    name="iron"
-                    type="number"
-                    step="0.1"
-                    value={form.iron}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="vitaminA">Vitamin A (IU)</Label>
-                  <Input
-                    id="vitaminA"
-                    name="vitaminA"
-                    type="number"
-                    step="0.1"
-                    value={form.vitaminA}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="vitaminC">Vitamin C (mg)</Label>
-                  <Input
-                    id="vitaminC"
-                    name="vitaminC"
-                    type="number"
-                    step="0.1"
-                    value={form.vitaminC}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="vitaminD">Vitamin D (IU)</Label>
-                  <Input
-                    id="vitaminD"
-                    name="vitaminD"
-                    type="number"
-                    step="0.1"
-                    value={form.vitaminD}
-                    onChange={handleChange}
-                    placeholder="0"
-                  />
-                </div>
-              </div>
+            <TabsContent value="micros">
+              <MicronutrientsTab form={form} handleChange={handleChange} />
             </TabsContent>
             
-            <TabsContent value="other" className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="brand">Brand</Label>
-                <Input
-                  id="brand"
-                  name="brand"
-                  value={form.brand}
-                  onChange={handleChange}
-                  placeholder="e.g., Nestlé, Generic"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="ingredients">Ingredients</Label>
-                <Textarea
-                  id="ingredients"
-                  name="ingredients"
-                  value={form.ingredients}
-                  onChange={handleChange}
-                  placeholder="List of ingredients separated by commas"
-                  rows={3}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="allergens">Allergens</Label>
-                <Input
-                  id="allergens"
-                  name="allergens"
-                  value={form.allergens}
-                  onChange={handleChange}
-                  placeholder="e.g., Contains nuts, dairy"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="preparationMethod">Preparation Method</Label>
-                <Select 
-                  value={form.preparationMethod} 
-                  onValueChange={(value) => handleSelectChange("preparationMethod", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select preparation method" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {preparationMethods.map((method) => (
-                      <SelectItem key={method} value={method}>
-                        {method}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="glycemicIndex">Glycemic Index (0-100)</Label>
-                <Input
-                  id="glycemicIndex"
-                  name="glycemicIndex"
-                  type="number"
-                  min="0"
-                  max="100"
-                  value={form.glycemicIndex}
-                  onChange={handleChange}
-                  placeholder="0"
-                />
-              </div>
+            <TabsContent value="other">
+              <OtherDetailsTab 
+                form={form}
+                handleChange={handleChange}
+                handleSelectChange={handleSelectChange}
+              />
             </TabsContent>
           </Tabs>
         </CardContent>
