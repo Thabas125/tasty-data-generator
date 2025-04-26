@@ -1,79 +1,78 @@
-
 import { FoodItem } from "./types";
 
-// Sample data for initial dataset
-export const sampleFoodData: FoodItem[] = [
-  {
-    id: "1",
-    name: "Apple",
-    category: "Fruit",
-    servingSize: "1 medium (182g)",
-    calories: 95,
-    protein: 0.5,
-    fat: 0.3,
-    carbohydrates: 25,
-    fiber: 4.4,
-    sugar: 19,
-    sodium: 2,
-    potassium: 195,
-    calcium: 11,
-    iron: 0.2,
-    vitaminA: 98,
-    vitaminC: 8.4,
-    vitaminD: 0,
-    preparationMethod: "Raw",
-    imageUrl: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9"
-  },
-  {
-    id: "2",
-    name: "Chicken Breast",
-    category: "Meat",
-    servingSize: "100g",
-    calories: 165,
-    protein: 31,
-    fat: 3.6,
-    carbohydrates: 0,
-    fiber: 0,
-    sugar: 0,
-    sodium: 74,
-    potassium: 256,
-    calcium: 15,
-    iron: 1.1,
-    vitaminA: 20,
-    vitaminC: 0,
-    vitaminD: 5,
-    preparationMethod: "Grilled",
-    imageUrl: "https://images.unsplash.com/photo-1493962853295-0fd70327578a"
-  },
-  {
-    id: "3",
-    name: "Whole Milk",
-    category: "Dairy",
-    servingSize: "1 cup (240ml)",
-    calories: 146,
-    protein: 7.7,
-    fat: 7.9,
-    carbohydrates: 11.7,
-    fiber: 0,
-    sugar: 11.7,
-    sodium: 98,
-    potassium: 349,
-    calcium: 276,
-    iron: 0.1,
-    vitaminA: 112,
-    vitaminC: 0,
-    vitaminD: 124,
-    brand: "Generic",
-    imageUrl: "https://images.unsplash.com/photo-1582562124811-c09040d0a901"
-  },
-];
-
-// Generate a random ID
 export const generateId = (): string => {
   return Math.random().toString(36).substring(2, 15);
 };
 
-// Export dataset to CSV
+export const sampleFoodData: FoodItem[] = [
+  {
+    id: "1",
+    name: "Classic Margherita Pizza",
+    category: "Main Course",
+    servingSize: "1 slice (1/8 of 12-inch pizza)",
+    calories: 200,
+    protein: 8,
+    fat: 7,
+    carbohydrates: 25,
+    fiber: 1.5,
+    sugar: 2,
+    sodium: 450,
+    preparationMethod: "Baked",
+    imageUrl: "https://images.unsplash.com/photo-1498936178812-4b2e558d2937",
+    cookingTime: "20 minutes",
+    difficulty: "Easy",
+    instructions: [
+      "Preheat oven to 450°F (230°C)",
+      "Roll out pizza dough",
+      "Spread tomato sauce",
+      "Add fresh mozzarella",
+      "Bake for 15-20 minutes",
+      "Top with fresh basil"
+    ],
+    servings: 8,
+    cuisineType: "Italian",
+    dietaryInfo: ["Vegetarian"],
+    prepTime: "10 minutes",
+    cookTime: "20 minutes",
+    totalTime: "30 minutes",
+    equipment: ["Pizza Stone", "Rolling Pin", "Oven"],
+    ingredients: "Pizza dough, tomato sauce, fresh mozzarella, fresh basil, olive oil, salt",
+    tips: "For the crispiest crust, preheat your pizza stone in the oven"
+  },
+  {
+    id: "2",
+    name: "Classic Caesar Salad",
+    category: "Salad",
+    servingSize: "2 cups",
+    calories: 320,
+    protein: 10,
+    fat: 28,
+    carbohydrates: 12,
+    fiber: 4,
+    sugar: 2,
+    sodium: 610,
+    preparationMethod: "Raw",
+    imageUrl: "https://images.unsplash.com/photo-1535268647677-300dbf3d78d1",
+    cookingTime: "15 minutes",
+    difficulty: "Easy",
+    instructions: [
+      "Wash and chop romaine lettuce",
+      "Make caesar dressing",
+      "Toast bread for croutons",
+      "Toss ingredients together",
+      "Add parmesan cheese"
+    ],
+    servings: 4,
+    cuisineType: "American",
+    dietaryInfo: ["Contains Dairy", "Contains Gluten"],
+    prepTime: "15 minutes",
+    totalTime: "15 minutes",
+    equipment: ["Large Bowl", "Whisk", "Knife"],
+    ingredients: "Romaine lettuce, parmesan cheese, croutons, caesar dressing, black pepper",
+    tips: "For extra flavor, rub the salad bowl with a clove of garlic before adding ingredients"
+  }
+];
+
 export const exportToCSV = (data: FoodItem[]): string => {
   const headers = [
     "Name",
@@ -128,12 +127,10 @@ export const exportToCSV = (data: FoodItem[]): string => {
   return [headers, ...rows].join("\n");
 };
 
-// Export dataset to JSON
 export const exportToJSON = (data: FoodItem[]): string => {
   return JSON.stringify(data, null, 2);
 };
 
-// Create a download link
 export const downloadFile = (content: string, fileName: string, contentType: string): void => {
   const a = document.createElement("a");
   const file = new Blob([content], { type: contentType });

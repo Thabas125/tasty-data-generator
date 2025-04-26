@@ -20,22 +20,37 @@ export interface FoodItem {
   brand?: string;
   ingredients?: string;
   allergens?: string;
-  preparationMethod?: string;
+  preparationMethod?: PreparationMethod;
   glycemicIndex?: number;
   imageUrl?: string;
+  // New recipe fields
+  cookingTime?: string;
+  difficulty?: "Easy" | "Medium" | "Hard";
+  instructions?: string[];
+  servings?: number;
+  cuisineType?: string;
+  dietaryInfo?: string[];
+  totalTime?: string;
+  prepTime?: string;
+  cookTime?: string;
+  equipment?: string[];
+  tips?: string;
+  nutritionScore?: number;
 }
 
 export type FoodCategory = 
-  | "Fruit" 
-  | "Vegetable" 
-  | "Meat" 
-  | "Seafood" 
-  | "Dairy" 
-  | "Grain" 
-  | "Beverage" 
-  | "Snack"
+  | "Appetizer"
+  | "Main Course"
   | "Dessert"
-  | "Condiment"
+  | "Breakfast"
+  | "Lunch"
+  | "Dinner"
+  | "Snack"
+  | "Beverage"
+  | "Salad"
+  | "Soup"
+  | "Side Dish"
+  | "Sauce"
   | "Other";
 
 export type PreparationMethod =
@@ -48,4 +63,8 @@ export type PreparationMethod =
   | "Roasted"
   | "Sautéed"
   | "Smoked"
+  | "Slow Cooked"
+  | "Pressure Cooked"
+  | "Air Fried"
   | "Other";
+
