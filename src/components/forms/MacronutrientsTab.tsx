@@ -7,8 +7,8 @@ interface MacronutrientsTabProps {
     protein: number;
     fat: number;
     carbohydrates: number;
-    fiber: number;
-    sugar: number;
+    fiber?: number;  // Make optional
+    sugar?: number;  // Make optional
   };
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

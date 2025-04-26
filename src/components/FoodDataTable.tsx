@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Table,
@@ -12,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FoodItem } from "@/lib/types";
 import { useFoodData } from "@/lib/food-context";
-import { Pencil, Trash2, Search, SortAsc, SortDesc } from "lucide-react";
+import { Pencil, Trash2, Search, SortAsc, SortDesc, BookOpenText } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -37,6 +36,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { RecipeDetails } from "./RecipeDetails";
 
 export function FoodDataTable() {
   const { foodItems, deleteFoodItem } = useFoodData();
@@ -47,11 +47,11 @@ export function FoodDataTable() {
   const [editItem, setEditItem] = useState<FoodItem | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
+  const [showRecipeDetails, setShowRecipeDetails] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<FoodItem | null>(null);
 
-  // Get unique categories from data
   const categories = ["All", ...new Set(foodItems.map((item) => item.category))];
 
-  // Filter and sort data
   const filteredData = foodItems.filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "All" || item.category === selectedCategory;
@@ -77,7 +77,6 @@ export function FoodDataTable() {
     return 0;
   });
 
-  // Handle sort column click
   const handleSort = (field: keyof FoodItem) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -87,7 +86,6 @@ export function FoodDataTable() {
     }
   };
 
-  // Render sort indicator
   const renderSortIndicator = (field: keyof FoodItem) => {
     if (sortField !== field) return null;
     return sortDirection === "asc" ? (
@@ -172,24 +170,8 @@ export function FoodDataTable() {
                 >
                   Calories {renderSortIndicator("calories")}
                 </TableHead>
-                <TableHead 
-                  onClick={() => handleSort("protein")}
-                  className="cursor-pointer text-right"
-                >
-                  Protein {renderSortIndicator("protein")}
-                </TableHead>
-                <TableHead 
-                  onClick={() => handleSort("fat")}
-                  className="cursor-pointer text-right"
-                >
-                  Fat {renderSortIndicator("fat")}
-                </TableHead>
-                <TableHead 
-                  onClick={() => handleSort("carbohydrates")}
-                  className="cursor-pointer text-right"
-                >
-                  Carbs {renderSortIndicator("carbohydrates")}
-                </TableHead>
+                <TableHead className="text-right">Nutrients</TableHead>
+                <TableHead className="text-center">Recipe</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -210,9 +192,23 @@ export function FoodDataTable() {
                     <TableCell>{item.category}</TableCell>
                     <TableCell>{item.servingSize}</TableCell>
                     <TableCell className="text-right">{item.calories}</TableCell>
-                    <TableCell className="text-right">{item.protein}g</TableCell>
-                    <TableCell className="text-right">{item.fat}g</TableCell>
-                    <TableCell className="text-right">{item.carbohydrates}g</TableCell>
+                    <TableCell className="text-right">
+                      {`P: ${item.protein}g | F: ${item.fat}g | C: ${item.carbohydrates}g`}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {(item.instructions?.length > 0 || item.cookingTime || item.difficulty) && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => {
+                            setSelectedRecipe(item);
+                            setShowRecipeDetails(true);
+                          }}
+                        >
+                          <BookOpenText className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </TableCell>
                     <TableCell>
                       <div className="flex space-x-2">
                         <Button
@@ -235,7 +231,7 @@ export function FoodDataTable() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={9} className="h-24 text-center">
+                  <TableCell colSpan={8} className="h-24 text-center">
                     No results found.
                   </TableCell>
                 </TableRow>
@@ -284,6 +280,15 @@ export function FoodDataTable() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={showRecipeDetails} onOpenChange={setShowRecipeDetails}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Recipe Details</DialogTitle>
+          </DialogHeader>
+          {selectedRecipe && <RecipeDetails recipe={selectedRecipe} />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

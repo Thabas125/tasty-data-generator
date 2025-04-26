@@ -11,7 +11,7 @@ interface BasicInfoTabProps {
     category: string;
     servingSize: string;
     calories: number;
-    imageUrl: string;
+    imageUrl?: string;  // Make imageUrl optional
   };
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectChange: (name: string, value: string) => void;
