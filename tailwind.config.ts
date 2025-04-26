@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                // Food-themed custom colors
+                "leaf-green": "#4CAF50",
+                "carrot-orange": "#FF9800",
+                "apple-red": "#F44336",
+                "banana-yellow": "#FFEB3B",
+                "berry-purple": "#9C27B0",
+                "cream": "#FFF8E1"
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

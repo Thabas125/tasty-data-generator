@@ -1,13 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { AppHeader } from "@/components/AppHeader";
+import { FoodDataTable } from "@/components/FoodDataTable";
+import { FoodProvider } from "@/lib/food-context";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <FoodProvider>
+      <div className="min-h-screen container py-6">
+        <AppHeader />
+        <main>
+          <section className="mb-8">
+            <FoodDataTable />
+          </section>
+
+          <footer className="text-center text-sm text-muted-foreground py-4">
+            <p>Tasty Data Generator - Create your nutritional food dataset with images</p>
+          </footer>
+        </main>
       </div>
-    </div>
+    </FoodProvider>
   );
 };
 
