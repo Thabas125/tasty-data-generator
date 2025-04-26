@@ -95,13 +95,15 @@ export function FoodForm({ foodItem, onClose }: FoodFormProps) {
   };
 
   const foodCategories: FoodCategory[] = [
-    "Fruit", "Vegetable", "Meat", "Seafood", "Dairy", "Grain", 
-    "Beverage", "Snack", "Dessert", "Condiment", "Other"
+    "Appetizer", "Main Course", "Dessert", "Breakfast", "Lunch", 
+    "Dinner", "Snack", "Beverage", "Salad", "Soup", "Side Dish", 
+    "Sauce", "Other"
   ];
 
   const preparationMethods: PreparationMethod[] = [
     "Raw", "Baked", "Boiled", "Grilled", "Fried", "Steamed", 
-    "Roasted", "Sautéed", "Smoked", "Other"
+    "Roasted", "Sautéed", "Smoked", "Slow Cooked", "Pressure Cooked", 
+    "Air Fried", "Other"
   ];
 
   return (

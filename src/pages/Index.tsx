@@ -2,7 +2,7 @@
 import { AppHeader } from "@/components/AppHeader";
 import { FoodDataTable } from "@/components/FoodDataTable";
 import { FoodProvider } from "@/lib/food-context";
-import { Chef } from "lucide-react";
+import { ChefHat } from "lucide-react";
 
 const Index = () => {
   return (
@@ -12,7 +12,7 @@ const Index = () => {
         <main>
           <div className="mb-8 text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <Chef className="h-8 w-8 text-primary" />
+              <ChefHat className="h-8 w-8 text-primary" />
               <h1 className="text-3xl font-bold tracking-tight">Recipe Dataset Generator</h1>
             </div>
             <p className="text-muted-foreground max-w-2xl mx-auto">
